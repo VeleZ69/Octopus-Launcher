@@ -35,10 +35,12 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import com.octopus.launcher.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -62,6 +64,15 @@ fun ImageFileBrowser(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val backText = stringResource(R.string.back)
+    val selectImageTitle = stringResource(R.string.select_image_title)
+    val loadingImagesText = stringResource(R.string.loading_images)
+    val errorText = stringResource(R.string.error)
+    val ensurePermissionsText = stringResource(R.string.ensure_permissions)
+    val noImagesFoundText = stringResource(R.string.no_images_found)
+    val noPreviewText = stringResource(R.string.no_preview)
+    val errorLoadingImagesText = stringResource(R.string.error_loading_images)
+    
     var images by remember { mutableStateOf<List<ImageItem>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -103,7 +114,7 @@ fun ImageFileBrowser(
                         android.util.Log.d("ImageFileBrowser", "Loaded and cached ${loaded.size} image paths (thumbnails loaded on demand)")
                         loaded
                     } catch (e: Exception) {
-                        errorMessage = "Ошибка загрузки изображений: ${e.message}"
+                        errorMessage = String.format(errorLoadingImagesText, e.message ?: "")
                         android.util.Log.e("ImageFileBrowser", "Error loading images", e)
                         emptyList()
                     }
@@ -112,7 +123,7 @@ fun ImageFileBrowser(
         } catch (e: Exception) {
             // Handle cancellation gracefully
             if (e !is kotlinx.coroutines.CancellationException) {
-                errorMessage = "Ошибка загрузки изображений: ${e.message}"
+                errorMessage = String.format(errorLoadingImagesText, e.message ?: "")
                 android.util.Log.e("ImageFileBrowser", "Error in LaunchedEffect", e)
             }
             images = emptyList()
@@ -135,12 +146,12 @@ fun ImageFileBrowser(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Назад",
+                    contentDescription = backText,
                     tint = Color.White
                 )
             }
             Text(
-                text = "Выбор изображения",
+                text = selectImageTitle,
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White.copy(alpha = 0.9f)
             )
@@ -156,7 +167,7 @@ fun ImageFileBrowser(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Загрузка изображений...",
+                            text = loadingImagesText,
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White.copy(alpha = 0.7f)
                         )
@@ -172,12 +183,12 @@ fun ImageFileBrowser(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = errorMessage ?: "Ошибка",
+                                text = errorMessage ?: errorText,
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Color.Red.copy(alpha = 0.9f)
                             )
                             Text(
-                                text = "Убедитесь, что разрешения на доступ к файлам предоставлены",
+                                text = ensurePermissionsText,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color.White.copy(alpha = 0.7f)
                             )
@@ -190,7 +201,7 @@ fun ImageFileBrowser(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Изображения не найдены",
+                            text = noImagesFoundText,
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White.copy(alpha = 0.7f)
                         )

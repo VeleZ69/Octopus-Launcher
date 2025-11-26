@@ -16,6 +16,7 @@ import java.net.URL
 import org.json.JSONObject
 import android.location.LocationListener
 import android.content.SharedPreferences
+import android.content.res.Resources
 import kotlin.coroutines.resume
 
 data class WeatherInfo(
@@ -93,7 +94,7 @@ class WeatherRepository(private val context: Context) {
             val city = if (location != null) {
                 getCityFromLocation(location)
             } else {
-                "Неизвестно"
+                context.resources.getString(com.octopus.launcher.R.string.unknown)
             }
             android.util.Log.d("WeatherRepository", "getWeatherInfo: City obtained in ${System.currentTimeMillis() - cityStartTime}ms: $city")
             
@@ -112,7 +113,7 @@ class WeatherRepository(private val context: Context) {
             // Return real data if available, otherwise use cached or fallback
             val result = weatherInfo ?: (getCachedWeather() ?: WeatherInfo(
                 temperature = 22,
-                condition = "Солнечно",
+                condition = context.resources.getString(com.octopus.launcher.R.string.sunny),
                 city = city
             ))
             
@@ -138,11 +139,11 @@ class WeatherRepository(private val context: Context) {
             val city = if (location != null) {
                 getCityFromLocation(location)
             } else {
-                "Неизвестно"
+                context.resources.getString(com.octopus.launcher.R.string.unknown)
             }
             WeatherInfo(
                 temperature = 22,
-                condition = "Солнечно",
+                condition = context.resources.getString(com.octopus.launcher.R.string.sunny),
                 city = city
             )
         }
@@ -195,26 +196,27 @@ class WeatherRepository(private val context: Context) {
         }
     }
     
-    // Convert WMO weather code to Russian description
+    // Convert WMO weather code to localized description
     private fun getWeatherConditionFromCode(code: Int): String {
+        val resources = context.resources
         return when (code) {
-            0 -> "Ясно"
-            1 -> "Преимущественно ясно"
-            2 -> "Переменная облачность"
-            3 -> "Пасмурно"
-            45 -> "Туман"
-            48 -> "Иней"
-            51, 53, 55 -> "Моросящий дождь"
-            56, 57 -> "Ледяной дождь"
-            61, 63, 65 -> "Дождь"
-            66, 67 -> "Ледяной дождь"
-            71, 73, 75 -> "Снег"
-            77 -> "Снежные зерна"
-            80, 81, 82 -> "Ливень"
-            85, 86 -> "Снегопад"
-            95 -> "Гроза"
-            96, 99 -> "Гроза с градом"
-            else -> "Неизвестно"
+            0 -> resources.getString(com.octopus.launcher.R.string.weather_clear)
+            1 -> resources.getString(com.octopus.launcher.R.string.weather_mainly_clear)
+            2 -> resources.getString(com.octopus.launcher.R.string.weather_partly_cloudy)
+            3 -> resources.getString(com.octopus.launcher.R.string.weather_overcast)
+            45 -> resources.getString(com.octopus.launcher.R.string.weather_fog)
+            48 -> resources.getString(com.octopus.launcher.R.string.weather_frost)
+            51, 53, 55 -> resources.getString(com.octopus.launcher.R.string.weather_drizzle)
+            56, 57 -> resources.getString(com.octopus.launcher.R.string.weather_freezing_drizzle)
+            61, 63, 65 -> resources.getString(com.octopus.launcher.R.string.weather_rain)
+            66, 67 -> resources.getString(com.octopus.launcher.R.string.weather_freezing_drizzle)
+            71, 73, 75 -> resources.getString(com.octopus.launcher.R.string.weather_snow)
+            77 -> resources.getString(com.octopus.launcher.R.string.weather_snow_grains)
+            80, 81, 82 -> resources.getString(com.octopus.launcher.R.string.weather_shower)
+            85, 86 -> resources.getString(com.octopus.launcher.R.string.weather_snowfall)
+            95 -> resources.getString(com.octopus.launcher.R.string.weather_thunderstorm)
+            96, 99 -> resources.getString(com.octopus.launcher.R.string.weather_thunderstorm_hail)
+            else -> resources.getString(com.octopus.launcher.R.string.unknown)
         }
     }
     
@@ -379,19 +381,19 @@ class WeatherRepository(private val context: Context) {
                     // For now, we'll use the deprecated method with suppression
                     @Suppress("DEPRECATION")
                     val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    addresses?.firstOrNull()?.locality ?: addresses?.firstOrNull()?.adminArea ?: "Неизвестно"
+                    addresses?.firstOrNull()?.locality ?: addresses?.firstOrNull()?.adminArea ?: context.resources.getString(com.octopus.launcher.R.string.unknown)
                 } else {
                     // Use old API for older Android versions
                     @Suppress("DEPRECATION")
                     val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    addresses?.firstOrNull()?.locality ?: addresses?.firstOrNull()?.adminArea ?: "Неизвестно"
+                    addresses?.firstOrNull()?.locality ?: addresses?.firstOrNull()?.adminArea ?: context.resources.getString(com.octopus.launcher.R.string.unknown)
                 }
             } else {
-                "Неизвестно"
+                context.resources.getString(com.octopus.launcher.R.string.unknown)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            "Неизвестно"
+            context.resources.getString(com.octopus.launcher.R.string.unknown)
         }
     }
 }

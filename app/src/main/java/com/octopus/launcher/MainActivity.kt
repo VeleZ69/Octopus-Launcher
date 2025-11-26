@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -37,10 +38,19 @@ import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Surface
 import com.octopus.launcher.ui.screens.LauncherScreen
 import com.octopus.launcher.ui.screens.SettingsScreen
+import com.octopus.launcher.ui.screens.ScreensaverScreen
 import com.octopus.launcher.ui.theme.OctopusLauncherTheme
 import com.octopus.launcher.ui.viewmodel.LauncherViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    
+    // Inactivity tracking for screensaver
+    private var inactivityJob: Job? = null
+    private val inactivityTimeoutMs = 60_000L
+    private var screensaverCallback: ((Boolean) -> Unit)? = null
     
     // Permission launcher for location permissions
     private val requestPermissionLauncher = registerForActivityResult(
@@ -143,8 +153,16 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             OctopusLauncherTheme {
-                Navigation()
+                Navigation(
+                    activity = this@MainActivity,
+                    onUserInteraction = { resetInactivityTimer() }
+                )
             }
+        }
+        
+        // Start inactivity timer after a short delay to allow UI to initialize
+        window.decorView.post {
+            resetInactivityTimer()
         }
     }
     
@@ -161,6 +179,12 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         android.util.Log.d("MainActivity", "onResume called")
+        
+        // Hide screensaver when resuming
+        screensaverCallback?.invoke(false)
+        
+        // Reset inactivity timer
+        resetInactivityTimer()
         
         // Check if we're the default launcher
         val packageManager = packageManager
@@ -180,6 +204,10 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         android.util.Log.d("MainActivity", "onPause called")
+        
+        // Cancel inactivity timer when paused
+        inactivityJob?.cancel()
+        screensaverCallback?.invoke(false)
     }
     
     override fun onStop() {
@@ -203,6 +231,9 @@ class MainActivity : ComponentActivity() {
     }
     
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // Reset inactivity timer on any key event
+        resetInactivityTimer()
+        
         val keyCode = event.keyCode
         if (keyCode == KeyEvent.KEYCODE_SETTINGS && event.action == KeyEvent.ACTION_UP) {
             if (!com.octopus.launcher.utils.TVKeyInjector.openTVSettings(this)) {
@@ -217,6 +248,35 @@ class MainActivity : ComponentActivity() {
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+    
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        // Reset inactivity timer on touch events
+        resetInactivityTimer()
+        return super.dispatchTouchEvent(event)
+    }
+    
+    private fun resetInactivityTimer() {
+        // Hide screensaver if showing
+        screensaverCallback?.invoke(false)
+        
+        // Cancel existing timer
+        inactivityJob?.cancel()
+        
+        // Start new timer
+        val activityRef = this@MainActivity
+        inactivityJob = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+            delay(inactivityTimeoutMs)
+            // Check if activity is still valid
+            if (!activityRef.isFinishing) {
+                android.util.Log.d("MainActivity", "Showing screensaver after inactivity")
+                screensaverCallback?.invoke(true)
+            }
+        }
+    }
+    
+    fun setScreensaverCallback(callback: (Boolean) -> Unit) {
+        screensaverCallback = callback
     }
     
     private fun requestPermissionsIfNeeded() {
@@ -287,15 +347,25 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-fun Navigation() {
+fun Navigation(
+    activity: MainActivity,
+    onUserInteraction: () -> Unit = {}
+) {
     val context = LocalContext.current
-    val activity = context as? MainActivity
     var currentScreen by remember { mutableStateOf("launcher") }
+    var showScreensaver by remember { mutableStateOf(false) }
     val launcherViewModel: LauncherViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     // Preload WeatherViewModel to cache weather data early
     val weatherViewModel: com.octopus.launcher.ui.viewmodel.WeatherViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val lifecycleOwner = LocalLifecycleOwner.current
     val backgroundColors by launcherViewModel.backgroundColors.collectAsState()
+    
+    // Set up screensaver callback
+    LaunchedEffect(Unit) {
+        activity.setScreensaverCallback { shouldShow ->
+            showScreensaver = shouldShow
+        }
+    }
     
     // Get background image path
     val backgroundImagePath by launcherViewModel.backgroundImagePath.collectAsState()
@@ -366,6 +436,8 @@ fun Navigation() {
             if (event == Lifecycle.Event.ON_RESUME) {
                 // When activity resumes (Home button pressed), return to launcher home
                 currentScreen = "launcher"
+                // Refresh weather when returning to launcher - check if cache is expired
+                weatherViewModel.refreshIfNeeded()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -385,6 +457,14 @@ fun Navigation() {
     BackHandler(enabled = currentScreen == "settings") {
         launcherViewModel.refreshBackgroundColors()
         currentScreen = "launcher"
+    }
+    
+    // Show screensaver if needed
+    if (showScreensaver) {
+        ScreensaverScreen(
+            onUserInteraction = onUserInteraction
+        )
+        return
     }
     
     // Show launcher screen immediately - no splash

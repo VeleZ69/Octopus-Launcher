@@ -93,6 +93,10 @@ dependencies {
     // Coil for smooth image loading and rendering
     implementation(libs.coil.compose)
     
+    // Performance optimization libraries
+    implementation("androidx.tracing:tracing:1.2.0") // For performance tracing
+    implementation("androidx.compose.runtime:runtime:1.7.6") // Latest runtime optimizations
+    
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     
@@ -104,6 +108,9 @@ dependencies {
     
     // Firebase Remote Config (optional, for dynamic configuration)
     // implementation("com.google.firebase:firebase-config")
+    
+    // Debug tools for performance monitoring (only in debug builds)
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
     
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

@@ -72,6 +72,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.octopus.launcher.R
 import androidx.core.graphics.drawable.toBitmap
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
@@ -89,7 +91,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.content.Context
-import com.octopus.launcher.R
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -105,13 +106,18 @@ fun TopNavigationBar(
     onMenuClick: (String) -> Unit,
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selectedMenu: String = "Главная",
+    selectedMenu: String,
     weatherViewModel: WeatherViewModel = viewModel()
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     var showMenuForApp by remember { mutableStateOf<String?>(null) }
     val context = LocalContext.current
     val weatherInfo by weatherViewModel.weatherInfo.collectAsState()
+    
+    // Get localized strings
+    val homeMenu = stringResource(R.string.menu_home)
+    val appsMenu = stringResource(R.string.menu_apps)
+    val settingsMenu = stringResource(R.string.menu_settings)
     var networkStatus by remember { mutableStateOf<NetworkStatus>(NetworkStatus.Unknown) }
     
     // Monitor network status - cache managers to avoid recreating
@@ -205,10 +211,10 @@ fun TopNavigationBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 NavigationMenu(
-                    items = listOf("Главная", "Приложения", "Настройки"),
+                    items = listOf(homeMenu, appsMenu, settingsMenu),
                     selectedItem = selectedMenu,
                     onItemClick = { item ->
-                        if (item == "Настройки") {
+                        if (item == settingsMenu) {
                             onSettingsClick()
                         } else {
                             onMenuClick(item)
@@ -474,6 +480,7 @@ fun AddAppDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val selectAppText = stringResource(R.string.select_app)
     val overlayFocusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     // Same sizes as PopularAppIcon
@@ -537,7 +544,7 @@ fun AddAppDialog(
                 verticalArrangement = Arrangement.spacedBy(28.dp)
             ) {
                 Text(
-                    text = "Выберите приложение",
+                    text = selectAppText,
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color.White.copy(alpha = 0.95f)
                 )
@@ -1027,6 +1034,11 @@ fun NavigationMenu(
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Get localized strings
+    val homeMenu = stringResource(R.string.menu_home)
+    val appsMenu = stringResource(R.string.menu_apps)
+    val settingsMenu = stringResource(R.string.menu_settings)
+    
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier,
@@ -1035,9 +1047,9 @@ fun NavigationMenu(
         items.forEach { item ->
             var isFocused by remember { mutableStateOf(false) }
             val isSelected = item == selectedItem
-            val isHomeItem = item == "Главная"
-            val isSettingsItem = item == "Настройки"
-            val isAppsItem = item == "Приложения"
+            val isHomeItem = item == homeMenu
+            val isSettingsItem = item == settingsMenu
+            val isAppsItem = item == appsMenu
 
             val backgroundColor = when {
                 isSelected -> Color.White.copy(alpha = 0.1f) // Very light background for selected
@@ -1115,14 +1127,14 @@ fun NavigationMenu(
                     if (isHomeItem) {
                         Icon(
                             imageVector = Icons.Default.Home,
-                            contentDescription = "Главная",
+                            contentDescription = homeMenu,
                             tint = contentColor,
                             modifier = Modifier.size(18.dp)
                         )
                     } else if (isSettingsItem) {
                         Icon(
                             imageVector = Icons.Default.Palette,
-                            contentDescription = "Настройки",
+                            contentDescription = settingsMenu,
                             tint = contentColor,
                             modifier = Modifier.size(18.dp)
                         )
@@ -1130,7 +1142,7 @@ fun NavigationMenu(
                         // Use Material Apps icon
                         Icon(
                             imageVector = Icons.Default.Apps,
-                            contentDescription = "Приложения",
+                            contentDescription = appsMenu,
                             tint = contentColor,
                             modifier = Modifier.size(18.dp)
                         )
@@ -1240,10 +1252,10 @@ fun NetworkStatusIcon(
     }
     
     val description = when (networkStatus) {
-        NetworkStatus.WifiActive -> "Wi-Fi активен"
-        NetworkStatus.WifiDisabled -> "Wi-Fi выключен"
-        NetworkStatus.Ethernet -> "Ethernet подключен"
-        NetworkStatus.Unknown -> "Статус сети неизвестен"
+        NetworkStatus.WifiActive -> stringResource(R.string.wifi_active)
+        NetworkStatus.WifiDisabled -> stringResource(R.string.wifi_disabled)
+        NetworkStatus.Ethernet -> stringResource(R.string.ethernet_connected)
+        NetworkStatus.Unknown -> stringResource(R.string.network_status_unknown)
     }
     
     if (iconResId != 0) {

@@ -73,7 +73,7 @@ fun TimeWeatherWidget(
     
     // Cache formatters to avoid recreating them on each recomposition
     val timeFormat = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
-    val dateFormat = remember { SimpleDateFormat("EEEE, d MMMM", Locale.forLanguageTag("ru-RU")) }
+    val dateFormat = remember { SimpleDateFormat("EEEE, d MMMM", Locale.getDefault()) }
     
     // Reusable Calendar instance to avoid creating new objects
     val calendar = remember { java.util.Calendar.getInstance() }
@@ -239,13 +239,25 @@ fun WeatherIcon(
     condition: String,
     modifier: Modifier = Modifier
 ) {
-    val isSnow = condition.contains("Снег", ignoreCase = true) || 
-                 condition.contains("снегопад", ignoreCase = true) ||
-                 condition.contains("снежные", ignoreCase = true)
-    val isSunny = condition.contains("Ясно", ignoreCase = true) || 
-                  condition.contains("Солнечно", ignoreCase = true) ||
-                  condition.contains("ясно", ignoreCase = true) ||
-                  condition.contains("Преимущественно", ignoreCase = true)
+    // Use localized strings for condition checking - cache to avoid recomposition overhead
+    val context = LocalContext.current
+    val snowKeywords = remember {
+        listOf(
+            context.resources.getString(com.octopus.launcher.R.string.weather_snow),
+            context.resources.getString(com.octopus.launcher.R.string.weather_snowfall),
+            context.resources.getString(com.octopus.launcher.R.string.weather_snow_grains)
+        )
+    }
+    val sunnyKeywords = remember {
+        listOf(
+            context.resources.getString(com.octopus.launcher.R.string.weather_clear),
+            context.resources.getString(com.octopus.launcher.R.string.sunny),
+            context.resources.getString(com.octopus.launcher.R.string.weather_mainly_clear)
+        )
+    }
+    
+    val isSnow = snowKeywords.any { condition.contains(it, ignoreCase = true) }
+    val isSunny = sunnyKeywords.any { condition.contains(it, ignoreCase = true) }
     
     Box(
         modifier = modifier,

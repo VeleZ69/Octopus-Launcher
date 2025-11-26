@@ -10,13 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.octopus.launcher.R
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import com.octopus.launcher.ui.components.BlurredBackground
 import com.octopus.launcher.ui.components.QuickActionsWidget
@@ -39,16 +42,22 @@ fun LauncherScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val backgroundColors by viewModel.backgroundColors.collectAsState()
     
-    var selectedMenu by remember { mutableStateOf("Главная") }
+    val homeMenu = stringResource(R.string.menu_home)
+    val appsMenu = stringResource(R.string.menu_apps)
+    var selectedMenu by remember { mutableStateOf(homeMenu) }
     var showSearch by remember { mutableStateOf(false) }
     
     // Get popular apps from popularApps repository (apps added to top bar)
     val popularAppsList by viewModel.popularApps.collectAsState()
     val popularAppsSet by viewModel.popularAppsSet.collectAsState()
-    // Recalculate popular apps maintaining order
-    val popularApps = popularAppsList.mapNotNull { packageName ->
-        apps.find { it.packageName == packageName }
-    }
+    // Recalculate popular apps maintaining order - use derivedStateOf for performance
+    val popularApps = remember(apps, popularAppsList) {
+        derivedStateOf {
+            popularAppsList.mapNotNull { packageName ->
+                apps.find { it.packageName == packageName }
+            }
+        }
+    }.value
     
     // Get background colors and image path
     val (color1, color2, color3) = backgroundColors
@@ -111,7 +120,7 @@ fun LauncherScreen(
                 AnimatedContent(
                     targetState = selectedMenu,
                     transitionSpec = {
-                        if (targetState == "Приложения") {
+                        if (targetState == appsMenu) {
                             // Entering apps list - smooth animation
                             fadeIn(
                                 animationSpec = tween(300, easing = FastOutSlowInEasing)
@@ -142,7 +151,7 @@ fun LauncherScreen(
                     label = "menuContent"
                 ) { menu ->
                     when (menu) {
-                        "Главная" -> {
+                        stringResource(R.string.menu_home) -> {
                             AnimatedContent(
                                 targetState = showSearch && searchQuery.isNotBlank(),
                                 transitionSpec = {
@@ -191,7 +200,7 @@ fun LauncherScreen(
                                 }
                             }
                         }
-                        "Приложения" -> {
+                        stringResource(R.string.menu_apps) -> {
                             // Apps list
                             AppsListScreen(
                                 viewModel = viewModel

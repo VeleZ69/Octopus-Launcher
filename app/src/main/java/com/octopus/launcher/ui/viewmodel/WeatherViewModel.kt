@@ -104,7 +104,21 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     }
     
     fun refreshWeather() {
+        // Always force refresh when explicitly called
         loadWeather(forceRefresh = true)
+    }
+    
+    /**
+     * Check if weather cache is expired and refresh if needed
+     * This is called when returning to launcher to ensure fresh data
+     */
+    fun refreshIfNeeded() {
+        viewModelScope.launch {
+            // Always force refresh when returning to launcher to ensure we have latest data
+            // This prevents showing stale data after being away for a while
+            android.util.Log.d("WeatherViewModel", "Refreshing weather on launcher resume")
+            loadWeather(forceRefresh = true)
+        }
     }
 }
 

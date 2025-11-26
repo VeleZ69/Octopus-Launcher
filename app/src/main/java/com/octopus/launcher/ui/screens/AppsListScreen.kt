@@ -20,12 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.octopus.launcher.ui.components.AppCard
 import com.octopus.launcher.ui.viewmodel.LauncherViewModel
+import com.octopus.launcher.R
 
 @OptIn(ExperimentalTvMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -48,8 +50,11 @@ fun AppsListScreen(
             .fillMaxSize()
             .padding(24.dp)
     ) {
+        val appsTitle = stringResource(R.string.apps_title)
+        val appsNotFound = stringResource(R.string.apps_not_found)
+        
         Text(
-            text = "Приложения",
+            text = appsTitle,
             style = MaterialTheme.typography.headlineLarge,
             color = Color.White.copy(alpha = 0.9f),
             modifier = Modifier.padding(bottom = 16.dp)
@@ -61,7 +66,7 @@ fun AppsListScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Приложения не найдены",
+                    text = appsNotFound,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White.copy(alpha = 0.7f)
                 )

@@ -1,0 +1,110 @@
+<resources>
+    <string name="app_name">Octopus Launcher</string>
+    
+    <!-- Navigation -->
+    <string name="menu_home">Home</string>
+    <string name="menu_apps">Apps</string>
+    <string name="menu_settings">Settings</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="background_colors">Background Colors</string>
+    <string name="gradient_1">Gradient 1</string>
+    <string name="gradient_2">Gradient 2</string>
+    <string name="gradient_3">Gradient 3</string>
+    <string name="background_image">Background Image</string>
+    <string name="select_image">Select Image</string>
+    <string name="change_image">Change Image</string>
+    <string name="delete">Delete</string>
+    <string name="delete_image">Delete Image</string>
+    <string name="presets">Presets</string>
+    
+    <!-- Color Presets -->
+    <string name="preset_ocean">Ocean</string>
+    <string name="preset_sunset">Sunset</string>
+    <string name="preset_purple">Purple</string>
+    <string name="preset_dark">Dark</string>
+    <string name="preset_dark_blue">Dark Blue</string>
+    <string name="preset_dark_green">Dark Green</string>
+    <string name="preset_black">Black</string>
+    
+    <!-- Launcher Actions -->
+    <string name="already_default">We are already default</string>
+    <string name="set_as_default">Set as default launcher</string>
+    <string name="force_install">Force Installation</string>
+    <string name="restart_launcher">Restart Launcher</string>
+    <string name="restarting_launcher">Restarting launcher…</string>
+    <string name="detailed_status">Detailed Status</string>
+    <string name="our_launcher_active">Our launcher is active</string>
+    <string name="stock_launcher_active">Stock launcher is active</string>
+    <string name="enable_stock_launchers">Enable Stock Launchers</string>
+    
+    <!-- Apps Screen -->
+    <string name="apps_title">Apps</string>
+    <string name="apps_not_found">No apps found</string>
+    
+    <!-- Search -->
+    <string name="search_apps">Search apps…</string>
+    <string name="search_results">Search results: \"%s\"</string>
+    
+    <!-- Quick Actions -->
+    <string name="toggle_wifi">Toggle Wi-Fi</string>
+    <string name="tv_settings">TV Settings</string>
+    <string name="failed_to_switch">Failed to switch to %s</string>
+    
+    <!-- Network Status -->
+    <string name="wifi_active">Wi-Fi active</string>
+    <string name="wifi_disabled">Wi-Fi disabled</string>
+    <string name="ethernet_connected">Ethernet connected</string>
+    <string name="network_status_unknown">Network status unknown</string>
+    
+    <!-- Image Browser -->
+    <string name="select_image_title">Select Image</string>
+    <string name="loading_images">Loading images…</string>
+    <string name="error">Error</string>
+    <string name="error_loading_images">Error loading images: %s</string>
+    <string name="ensure_permissions">Make sure file access permissions are granted</string>
+    <string name="no_images_found">No images found</string>
+    <string name="no_preview">No preview</string>
+    <string name="back">Back</string>
+    
+    <!-- App Management -->
+    <string name="edit_apps">Edit Apps</string>
+    <string name="select_app">Select App</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="delete_app_question">Delete \"%s\"?</string>
+    <string name="press_up_to_confirm">Press up arrow to confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_app">Add App</string>
+    
+    <!-- Video Recommendations -->
+    <string name="recommendations">Recommendations</string>
+    
+    <!-- Screensaver -->
+    <string name="unable_to_load_wallpaper">Unable to load wallpaper</string>
+    
+    <!-- Weather -->
+    <string name="unknown">Unknown</string>
+    <string name="sunny">Sunny</string>
+    
+    <!-- Weather Conditions -->
+    <string name="weather_clear">Clear</string>
+    <string name="weather_mainly_clear">Mainly clear</string>
+    <string name="weather_partly_cloudy">Partly cloudy</string>
+    <string name="weather_overcast">Overcast</string>
+    <string name="weather_fog">Fog</string>
+    <string name="weather_frost">Frost</string>
+    <string name="weather_drizzle">Drizzle</string>
+    <string name="weather_freezing_drizzle">Freezing drizzle</string>
+    <string name="weather_rain">Rain</string>
+    <string name="weather_snow">Snow</string>
+    <string name="weather_snow_grains">Snow grains</string>
+    <string name="weather_shower">Shower</string>
+    <string name="weather_snowfall">Snowfall</string>
+    <string name="weather_thunderstorm">Thunderstorm</string>
+    <string name="weather_thunderstorm_hail">Thunderstorm with hail</string>
+    
+    <!-- Input Types -->
+    <string name="input_tuner">Tuner</string>
+</resources>

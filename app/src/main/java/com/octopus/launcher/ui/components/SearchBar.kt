@@ -25,9 +25,11 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import com.octopus.launcher.R
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -36,6 +38,7 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val searchPlaceholder = stringResource(R.string.search_apps)
     var isFocused by remember { mutableStateOf(false) }
     
     // Animation for focus - same as PopularAppIcon
@@ -132,7 +135,7 @@ fun SearchBar(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "Поиск приложений...",
+                                        text = searchPlaceholder,
                                         style = MaterialTheme.typography.bodyLarge.copy(
                                             color = Color.White.copy(alpha = 0.6f)
                                         )

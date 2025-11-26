@@ -23,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.octopus.launcher.ui.components.AppCard
 import com.octopus.launcher.ui.viewmodel.LauncherViewModel
+import com.octopus.launcher.R
 
 @OptIn(ExperimentalTvMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -50,8 +52,9 @@ fun SearchResultsScreen(
             .fillMaxSize()
             .padding(24.dp)
     ) {
+        val searchResultsText = stringResource(R.string.search_results, searchQuery)
         Text(
-            text = "Результаты поиска: \"$searchQuery\"",
+            text = searchResultsText,
             style = MaterialTheme.typography.headlineMedium,
             color = Color.White.copy(alpha = 0.9f),
             modifier = Modifier.padding(bottom = 16.dp)

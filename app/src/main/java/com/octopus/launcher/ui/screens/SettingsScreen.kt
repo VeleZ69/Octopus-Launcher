@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,7 +44,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.octopus.launcher.R
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -202,14 +206,14 @@ fun SettingsScreen(
             )
         ) {
             Text(
-                text = "Настройки",
+                text = stringResource(R.string.settings_title),
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color.White.copy(alpha = 0.9f),
                 modifier = Modifier.padding(top = titleTopPadding, bottom = 8.dp)
             )
             
             Text(
-                text = "Цвета фона",
+                text = stringResource(R.string.background_colors),
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White.copy(alpha = 0.8f),
                 modifier = Modifier.padding(top = 16.dp)
@@ -217,26 +221,26 @@ fun SettingsScreen(
             
             // Gradient colors with labels
             ColorPicker(
-                label = "Градиент 1",
+                label = stringResource(R.string.gradient_1),
                 color = color1,
                 onColorChange = viewModel::setColor1
             )
             
             ColorPicker(
-                label = "Градиент 2",
+                label = stringResource(R.string.gradient_2),
                 color = color2,
                 onColorChange = viewModel::setColor2
             )
             
             ColorPicker(
-                label = "Градиент 3",
+                label = stringResource(R.string.gradient_3),
                 color = color3,
                 onColorChange = viewModel::setColor3
             )
             
             // Background image option
             Text(
-                text = "Фон из изображения",
+                text = stringResource(R.string.background_image),
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White.copy(alpha = 0.8f),
                 modifier = Modifier.padding(top = 8.dp)
@@ -310,7 +314,7 @@ fun SettingsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = if (backgroundImagePath != null) "Изменить изображение" else "Выбрать изображение",
+                            text = if (backgroundImagePath != null) stringResource(R.string.change_image) else stringResource(R.string.select_image),
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold
@@ -368,12 +372,12 @@ fun SettingsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = "Удалить изображение",
+                                contentDescription = stringResource(R.string.delete_image),
                                 tint = Color.Red,
                                 modifier = Modifier.size(12.dp)
                             )
                             Text(
-                                text = "Удалить",
+                                text = stringResource(R.string.delete),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.SemiBold
@@ -389,7 +393,7 @@ fun SettingsScreen(
 
             // Preset colors - closer to color pickers
             Text(
-                text = "Пресеты",
+                text = stringResource(R.string.presets),
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White.copy(alpha = 0.8f),
                 modifier = Modifier.padding(top = 8.dp) // Reduced spacing
@@ -401,7 +405,7 @@ fun SettingsScreen(
             ) {
                 item {
                     PresetButton(
-                        label = "Океан",
+                        label = stringResource(R.string.preset_ocean),
                         colors = Triple(
                             Color(0xFF4A90A4),
                             Color(0xFF5BA68C),
@@ -417,7 +421,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Закат",
+                        label = stringResource(R.string.preset_sunset),
                         colors = Triple(
                             Color(0xFFFF6B6B),
                             Color(0xFFFF8E53),
@@ -433,7 +437,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Фиолетовый",
+                        label = stringResource(R.string.preset_purple),
                         colors = Triple(
                             Color(0xFF6C5CE7),
                             Color(0xFFA29BFE),
@@ -449,7 +453,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Темный",
+                        label = stringResource(R.string.preset_dark),
                         colors = Triple(
                             Color(0xFF1A1A1A),
                             Color(0xFF2D2D2D),
@@ -465,7 +469,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Темно-синий",
+                        label = stringResource(R.string.preset_dark_blue),
                         colors = Triple(
                             Color(0xFF1E3A5F),
                             Color(0xFF2D4A6F),
@@ -481,7 +485,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Темно-зеленый",
+                        label = stringResource(R.string.preset_dark_green),
                         colors = Triple(
                             Color(0xFF1B3A2E),
                             Color(0xFF2D4A3E),
@@ -497,7 +501,7 @@ fun SettingsScreen(
                 
                 item {
                     PresetButton(
-                        label = "Черный",
+                        label = stringResource(R.string.preset_black),
                         colors = Triple(
                             Color(0xFF000000),
                             Color(0xFF1A1A1A),
@@ -572,7 +576,7 @@ fun SettingsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = if (isDefaultLauncher) "Мы уже по умолчанию" else "Сделать лаунчером по умолчанию",
+                            text = if (isDefaultLauncher) stringResource(R.string.already_default) else stringResource(R.string.set_as_default),
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold
@@ -653,7 +657,7 @@ fun SettingsScreen(
                 }
 
                 // 1) Принудительная установка
-                LauncherActionButton(label = "Принудительная установка") {
+                LauncherActionButton(label = stringResource(R.string.force_install)) {
                     val result = launcherManager.forceSetLauncher()
                     android.util.Log.d("SettingsScreen", "forceSetLauncher: $result")
                     try {
@@ -662,25 +666,30 @@ fun SettingsScreen(
                 }
 
                 // 2) Перезапустить лаунчер
-                LauncherActionButton(label = "Перезапустить лаунчер") {
+                val restartLauncherLabel = stringResource(R.string.restart_launcher)
+                val restartingLauncherText = stringResource(R.string.restarting_launcher)
+                LauncherActionButton(label = restartLauncherLabel) {
                     launcherManager.startOurLauncher()
                     try {
-                        android.widget.Toast.makeText(context, "Перезапуск лаунчера...", android.widget.Toast.LENGTH_SHORT).show()
+                        android.widget.Toast.makeText(context, restartingLauncherText, android.widget.Toast.LENGTH_SHORT).show()
                     } catch (_: Exception) {}
                 }
 
                 // 3) Детальный статус
-                LauncherActionButton(label = "Детальный статус") {
+                val detailedStatusLabel = stringResource(R.string.detailed_status)
+                val ourLauncherActiveText = stringResource(R.string.our_launcher_active)
+                val stockLauncherActiveText = stringResource(R.string.stock_launcher_active)
+                LauncherActionButton(label = detailedStatusLabel) {
                     val status = launcherManager.getLauncherStatus()
                     android.util.Log.d("SettingsScreen", "LauncherStatus: $status")
-                    val brief = if (status.isDefault) "Наш лаунчер активен" else "Стоковый лаунчер активен"
+                    val brief = if (status.isDefault) ourLauncherActiveText else stockLauncherActiveText
                     try {
                         android.widget.Toast.makeText(context, brief, android.widget.Toast.LENGTH_SHORT).show()
                     } catch (_: Exception) {}
                 }
 
                 // 4) Включить стоковые лаунчеры
-                LauncherActionButton(label = "Включить стоковые лаунчеры") {
+                LauncherActionButton(label = stringResource(R.string.enable_stock_launchers)) {
                     val result = launcherManager.enableStockLaunchers()
                     android.util.Log.d("SettingsScreen", "enableStockLaunchers: $result")
                     try {
@@ -717,23 +726,28 @@ fun ColorPicker(
         )
         
         // Color presets - scrollable
+        val colorList = listOf(
+            Color(0xFF4A90A4), Color(0xFF5BA68C), Color(0xFF6B9E7A), // Ocean
+            Color(0xFFFF6B6B), Color(0xFFFF8E53), Color(0xFFFFA07A), // Sunset
+            Color(0xFF6C5CE7), Color(0xFFA29BFE), Color(0xFFDDA0DD), // Purple
+            Color(0xFF2ECC71), Color(0xFF52BE80), Color(0xFF7FB069), // Green
+            Color(0xFF3498DB), Color(0xFF5DADE2), Color(0xFF85C1E9), // Blue
+            Color(0xFF1A1A1A), Color(0xFF2D2D2D), Color(0xFF3A3A3A), // Dark
+            Color(0xFF1E3A5F), Color(0xFF2D4A6F), Color(0xFF3A5A7F), // Dark Blue
+            Color(0xFF1B3A2E), Color(0xFF2D4A3E), Color(0xFF3A5A4E), // Dark Green
+            Color(0xFF000000), Color(0xFF1A1A1A)  // Black and light black
+        )
+        
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusGroup()
         ) {
-            items(
-                listOf(
-                    Color(0xFF4A90A4), Color(0xFF5BA68C), Color(0xFF6B9E7A), // Ocean
-                    Color(0xFFFF6B6B), Color(0xFFFF8E53), Color(0xFFFFA07A), // Sunset
-                    Color(0xFF6C5CE7), Color(0xFFA29BFE), Color(0xFFDDA0DD), // Purple
-                    Color(0xFF2ECC71), Color(0xFF52BE80), Color(0xFF7FB069), // Green
-                    Color(0xFF3498DB), Color(0xFF5DADE2), Color(0xFF85C1E9), // Blue
-                    Color(0xFF1A1A1A), Color(0xFF2D2D2D), Color(0xFF3A3A3A), // Dark
-                    Color(0xFF1E3A5F), Color(0xFF2D4A6F), Color(0xFF3A5A7F), // Dark Blue
-                    Color(0xFF1B3A2E), Color(0xFF2D4A3E), Color(0xFF3A5A4E), // Dark Green
-                    Color(0xFF000000), Color(0xFF1A1A1A)  // Black and light black
-                )
-            ) { presetColor ->
+            itemsIndexed(
+                items = colorList,
+                key = { index, _ -> index }
+            ) { _, presetColor ->
                 ColorCircle(
                     color = presetColor,
                     isSelected = color == presetColor,
@@ -752,15 +766,45 @@ fun ColorCircle(
 ) {
     var isFocused by remember { mutableStateOf(false) }
     
+    // Unified animations - same as buttons in settings
+    val animatedScale by animateFloatAsState(
+        targetValue = if (isFocused) 1.4f else 1f,
+        animationSpec = tween(durationMillis = 200),
+        label = "colorCircleScale"
+    )
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (isFocused) 1f else 0.7f,
+        animationSpec = tween(durationMillis = 200),
+        label = "colorCircleAlpha"
+    )
+    
     Box(
         modifier = Modifier
             .size(36.dp)
-            .clip(CircleShape)
-            .background(Color.Transparent)
-            .clickable(onClick = onClick)
+            .graphicsLayer {
+                scaleX = animatedScale
+                scaleY = animatedScale
+                alpha = animatedAlpha
+            }
             .onFocusChanged { isFocused = it.isFocused }
             .focusable()
+            .clickable(onClick = onClick)
     ) {
+        // Glow effect when focused
+        if (isFocused) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp)
+                    .clip(CircleShape)
+                    .background(
+                        color = Color.White.copy(alpha = 0.3f),
+                        shape = CircleShape
+                    )
+                    .blur(8.dp)
+            )
+        }
+        
         // Main color circle
         Box(
             modifier = Modifier
@@ -771,7 +815,7 @@ fun ColorCircle(
                     if (isSelected) {
                         Modifier.border(
                             width = 2.dp,
-                            color = Color.White.copy(alpha = 0.8f),
+                            color = Color.White.copy(alpha = 0.9f),
                             shape = CircleShape
                         )
                     } else {
@@ -780,14 +824,14 @@ fun ColorCircle(
                 )
         )
         
-        // Darkening overlay when focused - on top of everything
+        // Highlight overlay when focused
         if (isFocused) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(CircleShape)
                     .background(
-                        color = Color.Black.copy(alpha = 0.5f),
+                        color = Color.White.copy(alpha = 0.2f),
                         shape = CircleShape
                     )
             )

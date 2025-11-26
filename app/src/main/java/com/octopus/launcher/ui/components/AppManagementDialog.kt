@@ -38,11 +38,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.drawable.toBitmap
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.octopus.launcher.data.AppInfo
+import com.octopus.launcher.R
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
@@ -54,6 +56,13 @@ fun AppManagementDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val editAppsText = stringResource(R.string.edit_apps)
+    val removeText = stringResource(R.string.remove)
+    val addText = stringResource(R.string.add)
+    val deleteAppQuestionText = stringResource(R.string.delete_app_question)
+    val pressUpToConfirmText = stringResource(R.string.press_up_to_confirm)
+    val cancelText = stringResource(R.string.cancel)
+    
     var showAddDialog by remember { mutableStateOf(false) }
     var editingApp by remember { mutableStateOf<String?>(null) }
     var showDeleteConfirm by remember { mutableStateOf<String?>(null) }
@@ -77,7 +86,7 @@ fun AppManagementDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Изменить приложения",
+                    text = editAppsText,
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color.White.copy(alpha = 0.9f)
                 )
@@ -151,6 +160,7 @@ fun EditableAppIcon(
     onRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val removeText = stringResource(R.string.remove)
     var isFocused by remember { mutableStateOf(false) }
     // Unified animations - same as PopularAppIcon
     val animatedScale by animateFloatAsState(
@@ -219,7 +229,7 @@ fun EditableAppIcon(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Удалить",
+                    contentDescription = removeText,
                     tint = Color.White,
                     modifier = Modifier.size(16.dp)
                 )
@@ -233,6 +243,7 @@ private fun AddAppButtonFromDialog(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val addText = stringResource(R.string.add)
     var isFocused by remember { mutableStateOf(false) }
     // Unified animations - same as PopularAppIcon
     val animatedScale by animateFloatAsState(
@@ -274,7 +285,7 @@ private fun AddAppButtonFromDialog(
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Добавить",
+            contentDescription = addText,
             tint = Color.White,
             modifier = Modifier.size(32.dp)
         )
@@ -289,6 +300,7 @@ private fun AddAppDialogFromManagement(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val selectAppText = stringResource(R.string.select_app)
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -298,7 +310,7 @@ private fun AddAppDialogFromManagement(
     ) {
         Column {
             Text(
-                text = "Выберите приложение",
+                text = selectAppText,
                 style = MaterialTheme.typography.titleLarge,
                 color = Color.White.copy(alpha = 0.9f),
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -360,6 +372,11 @@ fun DeleteConfirmDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val deleteAppQuestionText = stringResource(R.string.delete_app_question, appName)
+    val pressUpToConfirmText = stringResource(R.string.press_up_to_confirm)
+    val removeText = stringResource(R.string.remove)
+    val cancelText = stringResource(R.string.cancel)
+    
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -371,13 +388,13 @@ fun DeleteConfirmDialog(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Удалить \"$appName\"?",
+                text = deleteAppQuestionText,
                 style = MaterialTheme.typography.titleLarge,
                 color = Color.White.copy(alpha = 0.9f)
             )
             
             Text(
-                text = "Нажмите стрелку вверх для подтверждения",
+                text = pressUpToConfirmText,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White.copy(alpha = 0.7f)
             )
@@ -419,7 +436,7 @@ fun DeleteConfirmDialog(
                         .padding(horizontal = 24.dp, vertical = 12.dp)
                 ) {
                     Text(
-                        text = "Удалить",
+                        text = removeText,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.White.copy(alpha = 0.9f)
                     )
@@ -452,7 +469,7 @@ fun DeleteConfirmDialog(
                         .padding(horizontal = 24.dp, vertical = 12.dp)
                 ) {
                     Text(
-                        text = "Отмена",
+                        text = cancelText,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.White.copy(alpha = 0.9f)
                     )

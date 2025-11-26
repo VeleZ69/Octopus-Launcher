@@ -49,9 +49,11 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import com.octopus.launcher.utils.TVKeyInjector
+import com.octopus.launcher.R
 import java.util.Locale
 
 private const val TAG = "QuickActionsWidget"
@@ -62,6 +64,9 @@ fun QuickActionsWidget(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val toggleWifiText = stringResource(R.string.toggle_wifi)
+    val tvSettingsText = stringResource(R.string.tv_settings)
+    val failedToSwitchText = stringResource(R.string.failed_to_switch)
     val inputs = remember { mutableStateListOf<TVKeyInjector.InputDescriptor>() }
     val tvInputManager = remember(context) {
         context.getSystemService(Context.TV_INPUT_SERVICE) as? TvInputManager
@@ -196,7 +201,7 @@ fun QuickActionsWidget(
                     val success = TVKeyInjector.launchInputById(context, input.id)
                     if (!success) {
                         Log.e(TAG, "Failed to launch input: ${input.label}")
-                        Toast.makeText(context, "Не удалось переключиться на ${input.label}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, String.format(failedToSwitchText, input.label), Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d(TAG, "Successfully launched input: ${input.label}")
                     }
@@ -209,7 +214,7 @@ fun QuickActionsWidget(
 
         QuickActionButton(
             iconType = IconType.Wifi,
-            contentDescription = "Переключить Wi-Fi",
+            contentDescription = toggleWifiText,
             onClick = {
                 Log.d(TAG, "WiFi button clicked")
                 toggleWifi(context)
@@ -218,7 +223,7 @@ fun QuickActionsWidget(
 
         QuickActionButton(
             iconType = IconType.Settings,
-            contentDescription = "Настройки ТВ",
+            contentDescription = tvSettingsText,
             onClick = {
                 Log.d(TAG, "Settings button clicked")
                 openTVSettings(context)

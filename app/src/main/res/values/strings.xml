@@ -1,3 +1,110 @@
 <resources>
     <string name="app_name">Octopus Launcher</string>
+    
+    <!-- Navigation -->
+    <string name="menu_home">Главная</string>
+    <string name="menu_apps">Приложения</string>
+    <string name="menu_settings">Настройки</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Настройки</string>
+    <string name="background_colors">Цвета фона</string>
+    <string name="gradient_1">Градиент 1</string>
+    <string name="gradient_2">Градиент 2</string>
+    <string name="gradient_3">Градиент 3</string>
+    <string name="background_image">Фон из изображения</string>
+    <string name="select_image">Выбрать изображение</string>
+    <string name="change_image">Изменить изображение</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_image">Удалить изображение</string>
+    <string name="presets">Пресеты</string>
+    
+    <!-- Color Presets -->
+    <string name="preset_ocean">Океан</string>
+    <string name="preset_sunset">Закат</string>
+    <string name="preset_purple">Фиолетовый</string>
+    <string name="preset_dark">Темный</string>
+    <string name="preset_dark_blue">Темно-синий</string>
+    <string name="preset_dark_green">Темно-зеленый</string>
+    <string name="preset_black">Черный</string>
+    
+    <!-- Launcher Actions -->
+    <string name="already_default">Мы уже по умолчанию</string>
+    <string name="set_as_default">Сделать лаунчером по умолчанию</string>
+    <string name="force_install">Принудительная установка</string>
+    <string name="restart_launcher">Перезапустить лаунчер</string>
+    <string name="restarting_launcher">Перезапуск лаунчера…</string>
+    <string name="detailed_status">Детальный статус</string>
+    <string name="our_launcher_active">Наш лаунчер активен</string>
+    <string name="stock_launcher_active">Стоковый лаунчер активен</string>
+    <string name="enable_stock_launchers">Включить стоковые лаунчеры</string>
+    
+    <!-- Apps Screen -->
+    <string name="apps_title">Приложения</string>
+    <string name="apps_not_found">Приложения не найдены</string>
+    
+    <!-- Search -->
+    <string name="search_apps">Поиск приложений…</string>
+    <string name="search_results">Результаты поиска: \"%s\"</string>
+    
+    <!-- Quick Actions -->
+    <string name="toggle_wifi">Переключить Wi-Fi</string>
+    <string name="tv_settings">Настройки ТВ</string>
+    <string name="failed_to_switch">Не удалось переключиться на %s</string>
+    
+    <!-- Network Status -->
+    <string name="wifi_active">Wi-Fi активен</string>
+    <string name="wifi_disabled">Wi-Fi выключен</string>
+    <string name="ethernet_connected">Ethernet подключен</string>
+    <string name="network_status_unknown">Статус сети неизвестен</string>
+    
+    <!-- Image Browser -->
+    <string name="select_image_title">Выбор изображения</string>
+    <string name="loading_images">Загрузка изображений…</string>
+    <string name="error">Ошибка</string>
+    <string name="error_loading_images">Ошибка загрузки изображений: %s</string>
+    <string name="ensure_permissions">Убедитесь, что разрешения на доступ к файлам предоставлены</string>
+    <string name="no_images_found">Изображения не найдены</string>
+    <string name="no_preview">Нет превью</string>
+    <string name="back">Назад</string>
+    
+    <!-- App Management -->
+    <string name="edit_apps">Изменить приложения</string>
+    <string name="select_app">Выберите приложение</string>
+    <string name="add">Добавить</string>
+    <string name="remove">Удалить</string>
+    <string name="delete_app_question">Удалить \"%s\"?</string>
+    <string name="press_up_to_confirm">Нажмите стрелку вверх для подтверждения</string>
+    <string name="cancel">Отмена</string>
+    <string name="add_app">Добавить приложение</string>
+    
+    <!-- Video Recommendations -->
+    <string name="recommendations">Рекомендации</string>
+    
+    <!-- Screensaver -->
+    <string name="unable_to_load_wallpaper">Unable to load wallpaper</string>
+    
+    <!-- Weather -->
+    <string name="unknown">Неизвестно</string>
+    <string name="sunny">Солнечно</string>
+    
+    <!-- Weather Conditions -->
+    <string name="weather_clear">Ясно</string>
+    <string name="weather_mainly_clear">Преимущественно ясно</string>
+    <string name="weather_partly_cloudy">Переменная облачность</string>
+    <string name="weather_overcast">Пасмурно</string>
+    <string name="weather_fog">Туман</string>
+    <string name="weather_frost">Иней</string>
+    <string name="weather_drizzle">Моросящий дождь</string>
+    <string name="weather_freezing_drizzle">Ледяной дождь</string>
+    <string name="weather_rain">Дождь</string>
+    <string name="weather_snow">Снег</string>
+    <string name="weather_snow_grains">Снежные зерна</string>
+    <string name="weather_shower">Ливень</string>
+    <string name="weather_snowfall">Снегопад</string>
+    <string name="weather_thunderstorm">Гроза</string>
+    <string name="weather_thunderstorm_hail">Гроза с градом</string>
+    
+    <!-- Input Types -->
+    <string name="input_tuner">Тюнер</string>
 </resources>
